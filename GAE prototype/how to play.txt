@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Protocol</title>
+    <style>
+        body { margin: 0; background: #0a0a0c; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        canvas { background: #1a1a2e; border: 4px solid #30475e; border-radius: 8px; cursor: none; }
+        #ui { position: absolute; top: 20px; text-align: center; pointer-events: none; }
+        .label { font-size: 12px; color: #e94560; letter-spacing: 2px; }
+        #msg { position: absolute; bottom: 20px; font-weight: bold; color: #f0f0f0; }
+        #overlay { position: absolute; display: none; text-align: center; background: rgba(0,0,0,0.8); padding: 40px; border-radius: 20px; }
+        button { background: #e94560; border: none; color: white; padding: 10px 20px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="ui">
+        <div class="label">OBJECTIVE: SABOTAGE ALL STATIONS</div>
+        <div id="status" style="font-size: 24px;">STATIONS LEFT: 4</div>
+    </div>
+
+    <div id="msg">HOLD [SPACE] NEAR STATIONS TO SABOTAGE</div>
+
+    <div id="overlay">
+        <h1 id="result-title">MISSION FAILED</h1>
+        <p id="result-desc">You were spotted by security.</p>
+        <button onclick="location.reload()">RE-DEPLOY</button>
+    </div>
+
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const statusEl = document.getElementById('status');
+    const overlay = document.getElementById('overlay');
+
+    // Game Config
+    const player = { x: 400, y: 300, size: 15, speed: 3.5, color: '#e94560' };
+    const keys = {};
+    let stations = [
+        { x: 100, y: 100, done: false, progress: 0 },
+        { x: 700, y: 100, done: false, progress: 0 },
+        { x: 100, y: 500, done: false, progress: 0 },
+        { x: 700, y: 500, done: false, progress: 0 }
+    ];
+    let bots = [
+        { x: 400, y: 100, tx: 700, ty: 100, speed: 2 },
+        { x: 400, y: 500, tx: 100, ty: 500, speed: 2.5 }
+    ];
+    let detection = 0;
+    let gameActive = true;
+
+    window.addEventListener('keydown', e => keys[e.code] = true);
+    window.addEventListener('keyup', e => keys[e.code] = false);
+
+    function update() {
+        if (!gameActive) return;
+
+        // Player Movement
+        if (keys['ArrowUp'] || keys['KeyW']) player.y -= player.speed;
+        if (keys['ArrowDown'] || keys['KeyS']) player.y += player.speed;
+        if (keys['ArrowLeft'] || keys['KeyA']) player.x -= player.speed;
+        if (keys['ArrowRight'] || keys['KeyD']) player.x += player.speed;
+
+        // Boundaries
+        player.x = Math.max(player.size, Math.min(canvas.width - player.size, player.x));
+        player.y = Math.max(player.size, Math.min(canvas.height - player.size, player.y));
+
+        // Bot Patrol Logic
+        bots.forEach(bot => {
+            let dx = bot.tx - bot.x;
+            let dy = bot.ty - bot.y;
+            let dist = Math.sqrt(dx*dx + dy*dy);
+            
+            if (dist < 5) { // Change target
+                bot.tx = Math.random() * canvas.width;
+                bot.ty = Math.random() * canvas.height;
+            } else {
+                bot.x += (dx/dist) * bot.speed;
+                bot.y += (dy/dist) * bot.speed;
+            }
+
+            // Detection Logic (Field of View)
+            let pDx = player.x - bot.x;
+            let pDy = player.y - bot.y;
+            let pDist = Math.sqrt(pDx*pDx + pDy*pDy);
+            if (pDist < 120) {
+                detection += 1.5;
+                if (detection > 100) endGame(false);
+            } else {
+                detection = Math.max(0, detection - 0.5);
+            }
+        });
+
+        // Sabotage Logic
+        let nearStation = false;
+        stations.forEach(s => {
+            let dist = Math.sqrt((player.x - s.x)**2 + (player.y - s.y)**2);
+            if (dist < 40 && !s.done) {
+                nearStation = true;
+                if (keys['Space']) {
+                    s.progress += 0.8;
+                    if (s.progress >= 100) {
+                        s.done = true;
+                        checkWin();
+                    }
+                }
+            }
+        });
+    }
+
+    function checkWin() {
+        const left = stations.filter(s => !s.done).length;
+        statusEl.innerText = `STATIONS LEFT: ${left}`;
+        if (left === 0) endGame(true);
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw Stations
+        stations.forEach(s => {
+            ctx.fillStyle = s.done ? '#00b894' : '#535c68';
+            ctx.fillRect(s.x - 20, s.y - 20, 40, 40);
+            if (!s.done && s.progress > 0) {
+                ctx.fillStyle = 'white';
+                ctx.fillRect(s.x - 20, s.y + 25, (s.progress/100)*40, 5);
+            }
+        });
+
+        // Draw Bots & Vision Range
+        bots.forEach(bot => {
+            ctx.beginPath();
+            ctx.arc(bot.x, bot.y, 120, 0, Math.PI*2);
+            ctx.fillStyle = `rgba(233, 69, 96, ${0.1 + (detection/200)})`;
+            ctx.fill();
+            
+            ctx.fillStyle = '#f9ca24';
+            ctx.beginPath();
+            ctx.arc(bot.x, bot.y, 10, 0, Math.PI*2);
+            ctx.fill();
+        });
+
+        // Draw Player
+        ctx.fillStyle = player.color;
+        ctx.beginPath();
+        ctx.arc(player.x, player.y, player.size, 0, Math.PI*2);
+        ctx.fill();
+        
+        // Detection Bar
+        if (detection > 0) {
+            ctx.fillStyle = '#e94560';
+            ctx.fillRect(player.x - 20, player.y - 30, (detection/100)*40, 5);
+        }
+    }
+
+    function endGame(win) {
+        gameActive = false;
+        overlay.style.display = 'block';
+        document.getElementById('result-title').innerText = win ? "MISSION SUCCESS" : "MISSION FAILED";
+        document.getElementById('result-title').style.color = win ? "#00b894" : "#e94560";
+        document.getElementById('result-desc').innerText = win ? "The facility is offline." : "Security identified the impostor.";
+    }
+
+    function loop() {
+        update();
+        draw();
+        requestAnimationFrame(loop);
+    }
+
+    loop();
+</script>
+</body>
+</html>

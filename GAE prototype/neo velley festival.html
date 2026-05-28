@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mall Mystery: Cyber-Valley</title>
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --pixel-gold: #ffcc00;
+            --ui-bg: rgba(45, 27, 76, 0.9);
+        }
+
+        body {
+            margin: 0;
+            background: #050510;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #game-wrapper {
+            position: relative;
+            margin-top: 20px;
+            border: 8px solid #3d254f;
+            image-rendering: pixelated;
+        }
+
+        canvas { display: block; }
+
+        /* Stardew Style UI */
+        .ui-panel {
+            position: absolute;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        #energy-meter {
+            bottom: 20px;
+            right: 20px;
+            width: 30px;
+            height: 150px;
+            background: #1a1a1a;
+            border: 3px solid #fff;
+        }
+
+        #energy-fill {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, #44ff44, #00aa00);
+            transition: height 0.3s;
+        }
+
+        #clock {
+            top: 20px;
+            right: 20px;
+            background: var(--ui-bg);
+            padding: 10px;
+            border: 3px solid var(--pixel-gold);
+            font-weight: bold;
+        }
+
+        #inventory {
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            background: var(--ui-bg);
+            padding: 5px;
+            border: 3px solid #7a5a9e;
+            pointer-events: all;
+        }
+
+        .slot {
+            width: 40px;
+            height: 40px;
+            background: rgba(0,0,0,0.5);
+            border: 2px solid #555;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+
+        .dialogue-box {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            background: var(--ui-bg);
+            border: 4px solid var(--pixel-gold);
+            padding: 20px;
+            pointer-events: all;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-wrapper">
+        <canvas id="gameCanvas" width="800" height="500"></canvas>
+        
+        <div id="clock" class="ui-panel">10:00 AM - Mall Event</div>
+
+        <div id="energy-meter" class="ui-panel">
+            <div id="energy-fill"></div>
+        </div>
+
+        <div id="inventory" class="ui-panel">
+            <div class="slot">🔧</div>
+            <div class="slot">📦</div>
+            <div class="slot">🧹</div>
+            <div class="slot">🔌</div>
+            <div class="slot" id="role-icon">👤</div>
+        </div>
+
+        <div id="dialogue" class="dialogue-box">
+            <p id="dialogue-text">Welcome to the Mall! Keep the arcade running.</p>
+            <button onclick="closeDialogue()">Close</button>
+        </div>
+    </div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Game Setup
+    const TILE_SIZE = 40;
+    const isImpostor = Math.random() > 0.5;
+    let energy = 100;
+    let gameTime = 600; // 10:00 AM in minutes
+    
+    document.getElementById('role-icon').innerText = isImpostor ? '😈' : '👷';
+    if(isImpostor) document.getElementById('dialogue-text').innerText = "SYSTEM: You are the AI Impostor. Drain the workers' energy without being seen.";
+
+    const player = {
+        x: 400, y: 250,
+        targetX: 400, targetY: 250,
+        speed: 3,
+        frame: 0
+    };
+
+    const npcs = [
+        {x: 120, y: 120, color: '#ff88aa', name: 'Vendor AI', task: 'Restocking'},
+        {x: 600, y: 400, color: '#88ffaa', name: 'Security Bot', task: 'Patrolling'},
+        {x: 200, y: 350, color: '#ffff88', name: 'Tourist', task: 'Lost'}
+    ];
+
+    // Objects
+    const mallObjects = [
+        {x: 80, y: 80, type: 'Arcade Machine', color: '#ff00ff'},
+        {x: 680, y: 80, type: 'Vending Machine', color: '#00ffff'},
+        {x: 80, y: 380, type: 'Power Core', color: '#00ff00'},
+        {x: 680, y: 380, type: 'Hologram Stand', color: '#ff8800'}
+    ];
+
+    // Keyboard Input
+    const keys = {};
+    window.addEventListener('keydown', e => keys[e.code] = true);
+    window.addEventListener('keyup', e => keys[e.code] = false);
+
+    function update() {
+        let moved = false;
+        if (keys['KeyW']) { player.y -= player.speed; moved = true; }
+        if (keys['KeyS']) { player.y += player.speed; moved = true; }
+        if (keys['KeyA']) { player.x -= player.speed; moved = true; }
+        if (keys['KeyD']) { player.x += player.speed; moved = true; }
+
+        if (moved) {
+            energy -= 0.02; // Stardew-style energy drain
+            player.frame += 0.1;
+            updateUI();
+        }
+
+        // Simple NPC "Wander" AI
+        npcs.forEach(n => {
+            n.x += Math.sin(Date.now() / 1000) * 0.5;
+            n.y += Math.cos(Date.now() / 1000) * 0.5;
+        });
+
+        // Time Progression
+        gameTime += 0.01;
+        const hours = Math.floor(gameTime / 60);
+        const mins = Math.floor(gameTime % 60);
+        document.getElementById('clock').innerText = `${hours}:${mins < 10 ? '0'+mins : mins} PM`;
+    }
+
+    function updateUI() {
+        document.getElementById('energy-fill').style.height = energy + '%';
+        if (energy <= 0) {
+            alert("Exhausted! You passed out in the mall.");
+            location.reload();
+        }
+    }
+
+    function draw() {
+        // 1. Draw Mall Floor (Checkered)
+        for (let i = 0; i < canvas.width; i += TILE_SIZE) {
+            for (let j = 0; j < canvas.height; j += TILE_SIZE) {
+                ctx.fillStyle = (i + j) % 80 === 0 ? '#1e1e30' : '#1a1a2e';
+                ctx.fillRect(i, j, TILE_SIZE, TILE_SIZE);
+            }
+        }
+
+        // 2. Draw Objects
+        mallObjects.forEach(obj => {
+            ctx.fillStyle = obj.color;
+            ctx.fillRect(obj.x, obj.y, TILE_SIZE, TILE_SIZE);
+            // Shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.fillRect(obj.x, obj.y + 35, TILE_SIZE, 10);
+        });
+
+        // 3. Draw NPCs
+        npcs.forEach(n => {
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.beginPath(); ctx.ellipse(n.x+20, n.y+40, 15, 5, 0, 0, Math.PI*2); ctx.fill(); // Shadow
+            ctx.fillStyle = n.color;
+            ctx.fillRect(n.x+10, n.y, 20, 35); // Body
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(n.x+14, n.y+5, 12, 8); // Eyes/Face
+        });
+
+        // 4. Draw Player (Bobbing animation)
+        const bob = Math.sin(player.frame) * 3;
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.beginPath(); ctx.ellipse(player.x+20, player.y+40, 15, 5, 0, 0, Math.PI*2); ctx.fill();
+        
+        ctx.fillStyle = isImpostor ? '#ff3366' : '#33ccff';
+        ctx.fillRect(player.x+10, player.y + bob, 20, 35);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(player.x+14, player.y + 5 + bob, 12, 8);
+
+        // 5. Lighting Overlay (Late night feel)
+        const darkness = Math.min(0.5, (gameTime - 600) / 1000); 
+        ctx.fillStyle = `rgba(10, 10, 40, ${darkness})`;
+        ctx.fillRect(0,0, canvas.width, canvas.height);
+    }
+
+    function closeDialogue() {
+        document.getElementById('dialogue').style.display = 'none';
+    }
+
+    // Interaction Check
+    window.addEventListener('keydown', e => {
+        if(e.code === 'Space' || e.code === 'KeyE') {
+            mallObjects.forEach(obj => {
+                let d = Math.sqrt((player.x-obj.x)**2 + (player.y-obj.y)**2);
+                if(d < 50) {
+                    document.getElementById('dialogue').style.display = 'block';
+                    document.getElementById('dialogue-text').innerText = isImpostor ? 
+                        `[SABOTAGE] You contaminated the ${obj.type}.` : 
+                        `[TASK] You are fixing the ${obj.type}... Energy used!`;
+                    energy -= 10;
+                }
+            });
+        }
+    });
+
+    function gameLoop() {
+        update();
+        draw();
+        requestAnimationFrame(gameLoop);
+    }
+
+    gameLoop();
+</script>
+</body>
+</html>
