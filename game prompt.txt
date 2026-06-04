@@ -1,0 +1,7 @@
+Prompt of the prototype:  
+generated a 2D pixelated game here player can move, there will be day and night cycle, player will be tired and player can interact with different objects
+
+
+"WASD" to move
+"SPACE" to interact
+go to coloured blocks to interact
