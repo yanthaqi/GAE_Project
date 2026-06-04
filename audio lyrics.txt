@@ -1,0 +1,158 @@
+Song 1 prompt 1:
+Create a relaxing 2-minute background music track called “Neo Valley Morning”.
+
+prompt 2: 
+Style:
+- Calm and cheerful
+- Inspired by farming simulation games
+- Soft acoustic guitar
+- Light piano melody
+- Gentle flute sounds
+- Nature ambience with birds chirping
+
+Mood:
+- Peaceful
+- Cozy
+- Relaxing
+- Warm morning atmosphere
+
+Tempo:
+- Slow to medium pace
+
+Purpose:
+The music will play during farming, exploring, planting crops, and interacting with NPCs in the game.
+
+Make the track loop smoothly and suitable for a casual game environment.
+
+
+lyrics: 
+[Verse 1]
+Sunlight shining on the fields today
+Little crops are swaying in the breeze
+Morning birds are singing all around
+Welcome to our cozy pixel town
+
+[Pre-Chorus]
+Plant the seeds and watch them grow
+Take it slow and let time flow
+Every little step we take
+Turns this world into our place
+
+[Chorus]
+Welcome to Neo Valley
+Where the skies are bright and blue
+Build your dreams together
+There’s adventure waiting for you
+
+Fishing by the riverside
+Friends are always by your side
+In this little world we know
+Neo Valley feels like home
+
+[Verse 2]
+Water falling softly through the night
+Neon stars are glowing warm and bright
+Every corner tells a story new
+Every day begins with something true
+
+[Bridge]
+Hold on tight to simple days
+Through the seasons life will change
+But together we will find
+A peaceful world beyond the lights
+
+[Final Chorus]
+Welcome to Neo Valley
+Where the future feels so bright
+Farming under neon skies
+Dancing through the festival lights
+
+Build a home and plant your dreams
+Nothing’s ever as it seems
+In this little world we know
+Neo Valley feels like home
+
+
+describtions:
+cozy, calm, video game soundtrack
+
+
+
+
+
+song 2 prompt 1:
+Create an energetic 2-minute soundtrack for called “Festival Night Lights”.
+
+prompt 2:
+Style:
+- Upbeat electronic music
+- Pixel-game inspired soundtrack
+- Neon festival vibe
+- Catchy synth melody
+- Light drum beats
+- Arcade-inspired sound effects
+
+Mood:
+- Fun
+- Exciting
+- Festive
+- Energetic night market atmosphere
+
+Tempo:
+- Medium to fast pace
+
+Purpose:
+The music will play during mini-games, festival events, shopping areas, and night activities inside the game.
+
+Make the soundtrack sound lively, playful, and suitable for a gaming event.
+
+
+lyrics:
+[Verse 1]
+Neon colors lighting up the night
+Music echoes through the city lights
+Crowds are dancing all across the floor
+Every moment leaves us wanting more
+
+[Pre-Chorus]
+Arcade sounds and glowing signs
+Festival energy comes alive
+Feel the rhythm, feel the beat
+Every heartbeat moves your feet
+
+[Chorus]
+Festival night lights shining bright
+Pixel dreams come alive tonight
+Laughing, dancing side by side
+Welcome to the neon paradise
+
+Play the games and win the prize
+Fireworks across the sky
+Celebrate beneath the glow
+At Neo Valley’s festival
+
+[Verse 2]
+Food stalls glowing down the avenue
+Every corner feels completely new
+Friends together making memories
+Living in this digital fantasy
+
+[Bridge]
+Raise your hands into the sky
+Let the music take us high
+Underneath the neon rain
+We will never feel the same
+
+[Final Chorus]
+Festival night lights shining bright
+Pixel stars are glowing in the night
+Through the music we unite
+Together everything feels right
+
+Celebrate and sing along
+This is where we all belong
+Underneath the neon glow
+Welcome to Neo Valley Festival
+
+description:
+electronic, chiptune, arcade-inspired

@@ -1,0 +1,5 @@
+prompt for the photos:
+generate 10 different pixelated photos of a game where the main charater is farming, watering, harvesting, meeting friends, trading, fishing, mining, exploring, joining events, crafting and relaxing for a relaxing multiplayer farming pixelated game
+
+prompt for the banner:
+combine the 10 photos into 1 banner and put the name of the game , "Neo Valley Festival", largely in the middle of the banner

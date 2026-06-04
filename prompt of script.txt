@@ -1,0 +1,25 @@
+prompt of the script:
+Generate a formal and welcoming 3-minute opening speech for the launch of a gaming event called “Neo Valley Festival”.
+
+Event Theme:
+A cozy futuristic farming festival inspired by pixel-art farming RPG games. The event is held inside a shopping mall and showcases AI-generated games, music, visuals, and interactive activities.
+
+Speech Requirements:
+- The speech should be delivered by the CEO of the shopping mall.
+- Maintain a professional, friendly, and inspiring tone.
+- Welcome guests, families, vendors, and gaming enthusiasts.
+- Introduce the concept of Neo Valley Festival.
+- Mention the use of generative AI in creating the event resources.
+- Highlight creativity, innovation, gaming, and community bonding.
+- Encourage visitors to explore the festival activities and mini-games.
+- End with an official opening statement for the festival.
+
+Length:
+Approximately 3 minutes long.
+
+Style:
+Formal, engaging, modern, and motivational.
+
+
+description of the script:
+This speech was generated using AI to create a professional opening presentation for the launch of Neo Valley Festival. The speech introduces the event theme, welcomes guests, highlights the use of generative AI technologies, and promotes creativity, innovation, and community engagement during the festival.

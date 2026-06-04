@@ -1,0 +1,59 @@
+deo prompt:
+Create a 1-minute cinematic promotional trailer for a cozy pixel-art farming game called “Neo Valley Festival”.
+
+Theme:
+A futuristic shopping mall has transformed into a relaxing farming festival filled with crops, mini-games, friendships, music, and adventure.
+
+Visual Style:
+- Pixel-art animation
+- Cozy farming RPG style
+- Bright colorful environment
+- Neon futuristic shopping mall mixed with nature
+- Smooth camera movement
+- Animated NPCs and animals
+- Cute pixel characters
+
+prompt 2:
+Scenes to Include:
+1. Opening shot of the futuristic shopping mall festival entrance
+2. Player planting and watering crops
+3. Harvesting vegetables and collecting coins
+4. Fishing mini-game near a glowing pond
+5. Exploring arcade and shopping areas
+6. NPCs talking and becoming friends
+7. Festival stage with music and dancing
+8. Day-to-night transition with glowing neon lights
+9. Cooking and crafting scenes
+10. Final group celebration scene with fireworks
+
+Effects:
+- Dynamic lighting
+- Sparkles and glow effects
+- Weather transitions
+- Pixel particle animations
+
+Music:
+- Relaxing upbeat game soundtrack
+- Cozy electronic music
+- Soft festival ambience
+
+Text Captions:
+- “Build Your Dream Farm”
+- “Make Friends”
+- “Explore the Festival”
+- “Play Mini Games”
+- “Experience Neo Valley Festival”
+
+Ending Screen:
+Display the game logo:
+“NEO VALLEY FESTIVAL”
+with the subtitle:
+“Where Farming Meets Fun”
+
+Video Format:
+- 1920x1080
+- 60 FPS
+- Suitable for shopping mall mega-screen advertisement
+
+video description:
+It captures the cozy pixel-art aesthetic and the unique neon-mall-meets-nature setting, following all your scene and text requirements.
